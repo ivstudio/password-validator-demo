@@ -40,11 +40,11 @@ const PassWordField = () => {
         />
       </FormGroup>
 
-      <Button onClick={() => alert(password)} disabled={valid}>
+      <Button onClick={() => console.log(password)} disabled={!valid}>
         Submit
       </Button>
 
-      <PasswordHelper validations={helperText} />
+      <PasswordHelper validations={helperText} valid={valid} />
     </Container>
   );
 };

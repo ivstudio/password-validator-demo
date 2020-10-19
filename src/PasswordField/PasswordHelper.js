@@ -1,9 +1,17 @@
 import React from "react";
-import { HelperList, HelperText } from "./PasswordField.styles";
+import { HelperList, HelperText, FeedBackBlock } from "./PasswordField.styles";
 
-export default function PasswordHelper({ validations }) {
+export default function PasswordHelper({ validations, valid }) {
+  if (valid) {
+    return (
+      <FeedBackBlock role="banner">
+        Your password is secure and you're all set!
+      </FeedBackBlock>
+    );
+  }
+
   return (
-    <HelperList>
+    <HelperList role="alert">
       {validations.map((item) => (
         <HelperText key={item.id} valid={item.valid}>
           {item.label}

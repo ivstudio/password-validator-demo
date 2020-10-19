@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
-function useValidator(password) {
+function useValidator(password = "") {
   return useMemo(() => {
     const validator = [
       {
-        id: 1,
+        id: "1",
         valid: /[a-z]/.test(password),
         label: "One lowercase character"
       },
@@ -30,7 +30,7 @@ function useValidator(password) {
       }
     ];
 
-    const valid = validator.some((item) => item.valid === false);
+    const valid = !validator.some((item) => item.valid === false);
 
     return [validator, valid];
   }, [password]);

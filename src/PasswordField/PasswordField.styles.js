@@ -125,3 +125,12 @@ export const ShowButton = styled.div`
 export const ShowButtonText = styled.span`
   ${textSm};
 `;
+
+export const FeedBackBlock = styled.div`
+  ${textReg};
+  text-align: center;
+  margin-top: ${spacing[20]};
+  border-radius: 3px;
+  padding: ${spacing[8]};
+  color: ${colors.blue60};
+`;
