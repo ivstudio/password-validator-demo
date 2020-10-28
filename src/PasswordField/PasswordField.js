@@ -12,9 +12,8 @@ import {
 } from "./PasswordField.styles";
 
 const PassWordField = () => {
-  const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const [helperText, valid] = useValidator(password);
+  const { helperText, valid, password, setPassword } = useValidator();
 
   const handleKeyDown = (e) => {
     if (e.key === " " || e.keyCode === 32) {

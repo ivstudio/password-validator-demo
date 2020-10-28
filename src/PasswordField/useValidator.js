@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
-function useValidator(password = "") {
-  return useMemo(() => {
-    const validator = [
+function useValidator(initialPassword = "") {
+  const [password, setPassword] = useState(initialPassword);
+  const helperText = useMemo(
+    () => [
       {
         id: "1",
         valid: /[a-z]/.test(password),
@@ -28,12 +29,15 @@ function useValidator(password = "") {
         valid: password.length > 7,
         label: "8 characters minimum"
       }
-    ];
+    ],
+    [password]
+  );
 
-    const valid = !validator.some((item) => item.valid === false);
+  const valid = useMemo(() => !helperText.some((i) => i.valid === false), [
+    helperText
+  ]);
 
-    return [validator, valid];
-  }, [password]);
+  return { helperText, valid, password, setPassword };
 }
 
 export default useValidator;

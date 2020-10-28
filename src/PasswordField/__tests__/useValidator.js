@@ -1,47 +1,44 @@
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook, act } from "@testing-library/react-hooks";
 import useValidator from "../useValidator";
 
-test("Validator returns correct data", () => {
-  const { result, rerender } = renderHook(({ pw }) => useValidator(pw), {
-    initialProps: { pw: "aB1=qxyz" }
-  });
+test("Validator returns correct output", () => {
+  const { result } = renderHook(() => useValidator(""));
+  expect(result.current.valid).toBeFalsy();
+  expect(result.current.helperText[0].valid).toBeFalsy();
+  expect(result.current.helperText[1].valid).toBeFalsy();
+  expect(result.current.helperText[2].valid).toBeFalsy();
+  expect(result.current.helperText[3].valid).toBeFalsy();
+  expect(result.current.helperText[4].valid).toBeFalsy();
 
-  const [validator, valid] = result.current;
+  act(() => result.current.setPassword(5234));
+  expect(result.current.valid).toBeFalsy();
+  expect(result.current.helperText[0].valid).toBeFalsy();
+  expect(result.current.helperText[1].valid).toBeFalsy();
+  expect(result.current.helperText[2].valid).toBeTruthy();
+  expect(result.current.helperText[3].valid).toBeFalsy();
+  expect(result.current.helperText[4].valid).toBeFalsy();
 
-  expect(valid).toBeTruthy();
-  expect(validator[0].valid).toBeTruthy();
-  expect(validator[1].valid).toBeTruthy();
-  expect(validator[2].valid).toBeTruthy();
-  expect(validator[3].valid).toBeTruthy();
-  expect(validator[4].valid).toBeTruthy();
+  act(() => result.current.setPassword("aB}"));
+  expect(result.current.valid).toBeFalsy();
+  expect(result.current.helperText[0].valid).toBeTruthy();
+  expect(result.current.helperText[1].valid).toBeTruthy();
+  expect(result.current.helperText[2].valid).toBeFalsy();
+  expect(result.current.helperText[3].valid).toBeTruthy();
+  expect(result.current.helperText[4].valid).toBeFalsy();
 
-  rerender({ pw: 5 });
-  const [validatorA, validB] = result.current;
+  act(() => result.current.setPassword("aB}zyqkx"));
+  expect(result.current.valid).toBeFalsy();
+  expect(result.current.helperText[0].valid).toBeTruthy();
+  expect(result.current.helperText[1].valid).toBeTruthy();
+  expect(result.current.helperText[2].valid).toBeFalsy();
+  expect(result.current.helperText[3].valid).toBeTruthy();
+  expect(result.current.helperText[4].valid).toBeTruthy();
 
-  expect(validB).toBeFalsy();
-  expect(validatorA[0].valid).toBeFalsy();
-  expect(validatorA[1].valid).toBeFalsy();
-  expect(validatorA[2].valid).toBeTruthy();
-  expect(validatorA[3].valid).toBeFalsy();
-  expect(validatorA[4].valid).toBeFalsy();
-
-  rerender({ pw: "aB}" });
-  const [validatorC, validC] = result.current;
-
-  expect(validC).toBeFalsy();
-  expect(validatorC[0].valid).toBeTruthy();
-  expect(validatorC[1].valid).toBeTruthy();
-  expect(validatorC[2].valid).toBeFalsy();
-  expect(validatorC[3].valid).toBeTruthy();
-  expect(validatorC[4].valid).toBeFalsy();
-
-  rerender({ pw: "aB}zyqkx" });
-  const [validatorD, validD] = result.current;
-
-  expect(validD).toBeFalsy();
-  expect(validatorD[0].valid).toBeTruthy();
-  expect(validatorD[1].valid).toBeTruthy();
-  expect(validatorD[2].valid).toBeFalsy();
-  expect(validatorD[3].valid).toBeTruthy();
-  expect(validatorD[4].valid).toBeTruthy();
+  act(() => result.current.setPassword("aB1=qxyz"));
+  expect(result.current.valid).toBeTruthy();
+  expect(result.current.helperText[0].valid).toBeTruthy();
+  expect(result.current.helperText[1].valid).toBeTruthy();
+  expect(result.current.helperText[2].valid).toBeTruthy();
+  expect(result.current.helperText[3].valid).toBeTruthy();
+  expect(result.current.helperText[4].valid).toBeTruthy();
 });
